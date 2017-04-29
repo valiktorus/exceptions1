@@ -1,8 +1,7 @@
 package by.gsu.epamlab;
 
+
 public class PriceDiscountPurchase extends Purchase {
-    public static final String NON_POSITIVE_VALUE = "non positive value ";
-    public static final String IN_DISCOUNT = " in discount";
     private Byn discount;
 
     public PriceDiscountPurchase() {
@@ -11,22 +10,20 @@ public class PriceDiscountPurchase extends Purchase {
 
     public PriceDiscountPurchase(String name, int price, int unitsNumber, int discount) {
         super(name, price, unitsNumber);
-        if (discount > 0 && discount < 100) {
+        if (discount > Constants.ZERO && discount < Constants.MAX_DISCOUNT) {
             this.discount = new Byn(discount);
         }else {
-            throw new IllegalArgumentException(NON_POSITIVE_VALUE + discount + IN_DISCOUNT);
+            throw new IllegalArgumentException(Constants.NON_POSITIVE_VALUE + discount + Constants.IN_DISCOUNT);
         }
     }
-
     @Override
     protected String fieldsToString() {
-
-        return String.format("%s%10s%10s",super.fieldsToString(), discount, getCost());
+        return super.fieldsToString() + Constants.DELIMITER + discount;
     }
 
     @Override
-    public String toString() {
-        return fieldsToString();
+    public String getCheckLine() {
+        return String.format(Constants.CHECK_LINE_FORMAT,getName(), getPrice(), getNumber(), discount, getCost());
     }
 
     @Override

@@ -2,9 +2,7 @@ package by.gsu.epamlab;
 
 public class Purchase {
 
-    public static final String NON_POSITIVE_VALUE = "non positive value ";
-    public static final String ERROR_NULL_NUMBER = "Error null units number";
-    public static final String IN_PRICE = " in price";
+
 
     private String name;
     private Byn price;
@@ -30,7 +28,7 @@ public class Purchase {
         if (name == null){
             throw new IllegalArgumentException(Constants.ERROR_NULL_NAME);
         }
-        if ("".equals(name)){
+        if (Constants.EMPTY_LINE.equals(name)){
             throw new IllegalArgumentException(Constants.ERROR_EMPTY_NAME);
         }
         this.name = name;
@@ -41,8 +39,8 @@ public class Purchase {
     }
 
     public void setPrice(Byn price) throws IllegalArgumentException{
-        if (price.getPriceInCoins() <= 0){
-            throw new IllegalArgumentException(NON_POSITIVE_VALUE + price.getPriceInCoins() + IN_PRICE);
+        if (price.getPriceInCoins() <= Constants.ZERO){
+            throw new IllegalArgumentException(Constants.NON_POSITIVE_VALUE + price.getPriceInCoins() + Constants.IN_PRICE);
         }
         this.price = price;
     }
@@ -52,8 +50,8 @@ public class Purchase {
     }
 
     public void setNumber(int number) throws IllegalArgumentException{
-        if (number == 0){
-            throw new IllegalArgumentException(ERROR_NULL_NUMBER);
+        if (number == Constants.ZERO){
+            throw new IllegalArgumentException(Constants.ERROR_NULL_NUMBER);
         }
         this.number = number;
     }
@@ -63,14 +61,16 @@ public class Purchase {
     }
 
     protected String fieldsToString(){
-        return String.format("%-10s%10s%10s", name, price, number);
+        return name + Constants.DELIMITER + price + Constants.DELIMITER + number;
     }
 
+    public String getCheckLine(){
+        return String.format(Constants.CHECK_LINE_FORMAT, name, price, number, Constants.MINUS, getCost());
+    }
     @Override
     public String toString() {
-        return String.format("%s%10s%10s",fieldsToString(), "-", getCost());
+        return fieldsToString() + Constants.DELIMITER + getCost();
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
