@@ -20,12 +20,9 @@ public class PurchasesList {
     public PurchasesList(String fileName){
         Scanner scanner = null;
         try {
-
             scanner = new Scanner(new FileReader(Constants.SRC + fileName + Constants.CSV));
             scanner.useLocale(Locale.ENGLISH);
                 purchases = getPurchases(scanner);
-
-
         } catch (FileNotFoundException e) {
             purchases = new ArrayList<>();
         } finally {
@@ -63,7 +60,6 @@ public class PurchasesList {
                 }
             }
             return purchases;
-
     }
 
     public Purchase getPurchase(Scanner scanner) throws CsvLineException {
@@ -102,5 +98,4 @@ public class PurchasesList {
     public void sortPurchases(Comparator<Purchase> comparator){
         Collections.sort(purchases, comparator);
     }
-
 }

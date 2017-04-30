@@ -27,6 +27,7 @@ public class Runner {
         }
 
         purchasesList.printPurchases();
+        System.out.println(Constants.SEARCH_RESULTS);
         purchasesList.search(addonPurchasesList, Constants.FIRST_SEARCH_INDEX);
         purchasesList.search(addonPurchasesList, Constants.SECOND_SEARCH_INDEX);
     }

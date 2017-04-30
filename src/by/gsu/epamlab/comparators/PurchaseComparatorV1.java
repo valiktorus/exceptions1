@@ -14,12 +14,7 @@ public class PurchaseComparatorV1 implements Comparator<Purchase> {
             boolean isSecondInstanceOfPricePurchase = second instanceof PriceDiscountPurchase;
 
             if (isSameClass(isFirstInstanceOfPricePurchase, isSecondInstanceOfPricePurchase)){
-                if (isFirstInstanceOfPricePurchase) {
-                    compareResult = second.getCost().getPriceInCoins() - first.getCost().getPriceInCoins();
-                }else{
-                    compareResult = first.getCost().getPriceInCoins() - second.getCost().getPriceInCoins();
-                }
-
+                compareResult = first.getCost().getPriceInCoins() - second.getCost().getPriceInCoins();
             }else {
                 compareResult = isFirstInstanceOfPricePurchase ? 1 : -1;
             }
