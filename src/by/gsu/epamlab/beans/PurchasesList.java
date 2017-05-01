@@ -1,5 +1,6 @@
-package by.gsu.epamlab;
+package by.gsu.epamlab.beans;
 
+import by.gsu.epamlab.Constants;
 import by.gsu.epamlab.beans.Byn;
 import by.gsu.epamlab.beans.PriceDiscountPurchase;
 import by.gsu.epamlab.beans.Purchase;

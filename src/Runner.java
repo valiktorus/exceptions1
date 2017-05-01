@@ -1,5 +1,5 @@
 import by.gsu.epamlab.beans.Purchase;
-import by.gsu.epamlab.PurchasesList;
+import by.gsu.epamlab.beans.PurchasesList;
 import by.gsu.epamlab.comparators.PurchaseComparatorBuilder;
 import by.gsu.epamlab.exceptions.NotSortedCollectionException;
 
