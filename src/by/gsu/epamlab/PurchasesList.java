@@ -1,9 +1,14 @@
 package by.gsu.epamlab;
 
+import by.gsu.epamlab.beans.Byn;
+import by.gsu.epamlab.beans.Purchase;
+import by.gsu.epamlab.beans.PurchaseFactory;
 import by.gsu.epamlab.comparators.SearchComparator;
+import by.gsu.epamlab.exceptions.CsvLineException;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class PurchasesList {
@@ -22,8 +27,8 @@ public class PurchasesList {
         try {
             scanner = new Scanner(new FileReader(Constants.SRC + fileName + Constants.CSV));
             scanner.useLocale(Locale.ENGLISH);
-                purchases = getPurchases(scanner);
-        } catch (FileNotFoundException e) {
+            purchases = getPurchases(scanner);
+        } catch (IOException e) {
             purchases = new ArrayList<>();
         } finally {
             if (scanner != null){
@@ -38,15 +43,17 @@ public class PurchasesList {
         } catch (IndexOutOfBoundsException e){
             purchases.add(purchase);
         }
+        SearchComparator.collectionIsNotSorted();
     }
 
     public void delete(int index){
-        try {
+        if (isIndexCorrect(index)){
             purchases.remove(index);
-        }catch (IndexOutOfBoundsException e){
-            //do nothing
         }
+    }
 
+    private boolean isIndexCorrect(int index){
+        return !(index < 0 || (purchases.size() - 1) < index);
     }
 
     private List<Purchase> getPurchases(Scanner scanner){
@@ -64,7 +71,7 @@ public class PurchasesList {
 
     public Purchase getPurchase(Scanner scanner) throws CsvLineException {
         String csvLine = scanner.nextLine();
-        return PurchaseFactory.getPurchase(csvLine);
+        return PurchaseFactory.getClassFromFactory(csvLine);
     }
 
     public Byn getTotalCost(){
@@ -83,7 +90,11 @@ public class PurchasesList {
         System.out.printf(Constants.TOTAL_PRICE_FORMAT, Constants.TOTAL_COST, getTotalCost());
     }
 
-    public void search(PurchasesList list, int index){
+    public void binarySearch(PurchasesList list, int index){
+        if (!SearchComparator.isIsCollectionSorted()){
+            System.err.println("Collection is not sorted");
+            return;
+        }
         Purchase requiredPurchase = list.getListOfPurchases().get(index);
         Collections.binarySearch(purchases, requiredPurchase, new SearchComparator());
         int requiredIndex = Collections.binarySearch(purchases, requiredPurchase, new SearchComparator());
@@ -97,5 +108,6 @@ public class PurchasesList {
 
     public void sortPurchases(Comparator<Purchase> comparator){
         Collections.sort(purchases, comparator);
+        SearchComparator.collectionIsNotSorted();
     }
 }

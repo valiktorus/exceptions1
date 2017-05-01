@@ -1,9 +1,11 @@
-package by.gsu.epamlab;
+package by.gsu.epamlab.beans;
+
+import by.gsu.epamlab.Constants;
+import by.gsu.epamlab.exceptions.EmptyLineException;
+import by.gsu.epamlab.exceptions.NonPositiveArgumentException;
+import by.gsu.epamlab.exceptions.NumField;
 
 public class Purchase {
-
-
-
     private String name;
     private Byn price;
     private int number;
@@ -24,12 +26,9 @@ public class Purchase {
         return name;
     }
 
-    public void setName(String name)  throws IllegalArgumentException{
-        if (name == null){
-            throw new IllegalArgumentException(Constants.ERROR_NULL_NAME);
-        }
+    public void setName(String name){
         if (Constants.EMPTY_LINE.equals(name)){
-            throw new IllegalArgumentException(Constants.ERROR_EMPTY_NAME);
+            throw new EmptyLineException(Constants.ERROR_EMPTY_NAME);
         }
         this.name = name;
     }
@@ -38,9 +37,10 @@ public class Purchase {
         return price;
     }
 
-    public void setPrice(Byn price) throws IllegalArgumentException{
-        if (price.getPriceInCoins() <= Constants.ZERO){
-            throw new IllegalArgumentException(Constants.NON_POSITIVE_VALUE + price.getPriceInCoins() + Constants.IN_PRICE);
+    public void setPrice(Byn price){
+        int coinsPrice = price.getPriceInCoins();
+        if (coinsPrice <= Constants.ZERO){
+            throw new NonPositiveArgumentException(coinsPrice, NumField.PRICE);
         }
         this.price = price;
     }
@@ -49,9 +49,9 @@ public class Purchase {
         return number;
     }
 
-    public void setNumber(int number) throws IllegalArgumentException{
-        if (number == Constants.ZERO){
-            throw new IllegalArgumentException(Constants.ERROR_NULL_NUMBER);
+    public void setNumber(int number){
+        if (number <= Constants.ZERO){
+            throw new NonPositiveArgumentException(number, NumField.NUMBER);
         }
         this.number = number;
     }
@@ -67,10 +67,12 @@ public class Purchase {
     public String getCheckLine(){
         return String.format(Constants.CHECK_LINE_FORMAT, name, price, number, Constants.MINUS, getCost());
     }
+
     @Override
     public String toString() {
         return fieldsToString() + Constants.DELIMITER + getCost();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

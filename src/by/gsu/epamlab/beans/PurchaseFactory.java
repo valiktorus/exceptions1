@@ -1,8 +1,13 @@
-package by.gsu.epamlab;
+package by.gsu.epamlab.beans;
+
+import by.gsu.epamlab.Constants;
+import by.gsu.epamlab.beans.PriceDiscountPurchase;
+import by.gsu.epamlab.beans.Purchase;
+import by.gsu.epamlab.exceptions.CsvLineException;
 
 public class PurchaseFactory {
-    public static Purchase getPurchase(String line) throws CsvLineException{
-        String[] values = line.split(Constants.DELIMITER);
+    public static Purchase getClassFromFactory(String csvLine) throws CsvLineException {
+        String[] values = csvLine.split(Constants.DELIMITER);
         int valuesLength = values.length;
         Purchase purchase;
         String name;
@@ -25,12 +30,12 @@ public class PurchaseFactory {
                     purchase = new PriceDiscountPurchase(name, price, number, discount);
                     break;
                 default:
-                    throw new CsvLineException(Constants.ERROR_WRONG_NUMBER, line);
+                    throw new CsvLineException(csvLine, Constants.ERROR_WRONG_NUMBER);
             }
         } catch (NumberFormatException e) {
-            throw new CsvLineException(Constants.ERROR_FORMAT_NUMBER, line);
+            throw new CsvLineException(csvLine, Constants.ERROR_FORMAT_NUMBER);
         } catch (IllegalArgumentException e) {
-            throw new CsvLineException(e.getMessage(), line);
+            throw new CsvLineException(csvLine, e);
         }
         return purchase;
     }

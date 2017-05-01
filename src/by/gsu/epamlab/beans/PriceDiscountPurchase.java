@@ -1,5 +1,9 @@
-package by.gsu.epamlab;
+package by.gsu.epamlab.beans;
 
+
+import by.gsu.epamlab.Constants;
+import by.gsu.epamlab.exceptions.NonPositiveArgumentException;
+import by.gsu.epamlab.exceptions.NumField;
 
 public class PriceDiscountPurchase extends Purchase {
     private Byn discount;
@@ -13,7 +17,7 @@ public class PriceDiscountPurchase extends Purchase {
         if (discount > Constants.ZERO && discount < Constants.MAX_DISCOUNT) {
             this.discount = new Byn(discount);
         }else {
-            throw new IllegalArgumentException(Constants.NON_POSITIVE_VALUE + discount + Constants.IN_DISCOUNT);
+            throw new NonPositiveArgumentException(discount, NumField.DISCOUNT);
         }
     }
     @Override

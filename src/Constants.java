@@ -12,5 +12,5 @@ public class Constants {
     public static final int INDEX_MINUS_FIVE = -5;
     public static final int FIRST_SEARCH_INDEX = 1;
     public static final int SECOND_SEARCH_INDEX = 3;
-    public static final String SEARCH_RESULTS = "search results:";
+    public static final String SEARCH_RESULTS = "binarySearch results:";
 }

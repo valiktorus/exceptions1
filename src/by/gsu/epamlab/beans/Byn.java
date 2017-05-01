@@ -1,4 +1,4 @@
-package by.gsu.epamlab;
+package by.gsu.epamlab.beans;
 
 
 import java.math.RoundingMode;

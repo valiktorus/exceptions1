@@ -20,10 +20,9 @@ public class Constants {
     public static final int UNITS_NUMBER_INDEX = 2;
     public static final int DISCOUNT_INDEX = 3;
     public static final String DELIMITER = ";";
-    public static final String ERROR_NULL_NAME = TAB + "null name";
     public static final String ERROR_EMPTY_NAME = TAB + "empty name";
 // PurchaseList
-    public static final String ERROR_WRONG_NUMBER = TAB + TAB + "wrong number of arguments";
+    public static final String ERROR_WRONG_NUMBER = TAB + "wrong number of arguments";
     public static final String ERROR_FORMAT_NUMBER = TAB + "wrong format of arguments";
     public static final String SRC = "src/";
     public static final String CSV = ".csv";

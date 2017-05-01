@@ -1,4 +1,4 @@
-import by.gsu.epamlab.Purchase;
+import by.gsu.epamlab.beans.Purchase;
 import by.gsu.epamlab.PurchasesList;
 import java.util.Comparator;
 
@@ -28,7 +28,7 @@ public class Runner {
 
         purchasesList.printPurchases();
         System.out.println(Constants.SEARCH_RESULTS);
-        purchasesList.search(addonPurchasesList, Constants.FIRST_SEARCH_INDEX);
-        purchasesList.search(addonPurchasesList, Constants.SECOND_SEARCH_INDEX);
+        purchasesList.binarySearch(addonPurchasesList, Constants.FIRST_SEARCH_INDEX);
+        purchasesList.binarySearch(addonPurchasesList, Constants.SECOND_SEARCH_INDEX);
     }
 }
