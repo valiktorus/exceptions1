@@ -1,12 +1,15 @@
 package by.gsu.epamlab.beans;
 
-
 import by.gsu.epamlab.Constants;
 import by.gsu.epamlab.exceptions.NonPositiveArgumentException;
 import by.gsu.epamlab.exceptions.NumField;
 
 public class PriceDiscountPurchase extends Purchase {
     private Byn discount;
+
+    public Byn getDiscount() {
+        return discount;
+    }
 
     public PriceDiscountPurchase() {
         super();
@@ -23,11 +26,6 @@ public class PriceDiscountPurchase extends Purchase {
     @Override
     protected String fieldsToString() {
         return super.fieldsToString() + Constants.DELIMITER + discount;
-    }
-
-    @Override
-    public String getCheckLine() {
-        return String.format(Constants.CHECK_LINE_FORMAT,getName(), getPrice(), getNumber(), discount, getCost());
     }
 
     @Override

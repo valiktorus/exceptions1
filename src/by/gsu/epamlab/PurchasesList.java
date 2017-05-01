@@ -1,12 +1,15 @@
 package by.gsu.epamlab;
 
 import by.gsu.epamlab.beans.Byn;
+import by.gsu.epamlab.beans.PriceDiscountPurchase;
 import by.gsu.epamlab.beans.Purchase;
 import by.gsu.epamlab.beans.PurchaseFactory;
+import by.gsu.epamlab.comparators.PurchaseComparatorBuilder;
 import by.gsu.epamlab.comparators.SearchComparator;
 import by.gsu.epamlab.exceptions.CsvLineException;
+import by.gsu.epamlab.exceptions.NotSortedCollectionException;
+import by.gsu.epamlab.table.TableEnum;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -14,7 +17,7 @@ import java.util.*;
 public class PurchasesList {
     private List<Purchase> purchases;
 
-    public List<Purchase> getListOfPurchases() {
+    public List<Purchase> getPurchases() {
         return purchases;
     }
 
@@ -27,7 +30,7 @@ public class PurchasesList {
         try {
             scanner = new Scanner(new FileReader(Constants.SRC + fileName + Constants.CSV));
             scanner.useLocale(Locale.ENGLISH);
-            purchases = getPurchases(scanner);
+            purchases = setPurchases(scanner);
         } catch (IOException e) {
             purchases = new ArrayList<>();
         } finally {
@@ -53,10 +56,10 @@ public class PurchasesList {
     }
 
     private boolean isIndexCorrect(int index){
-        return !(index < 0 || (purchases.size() - 1) < index);
+        return !(index < Constants.ZERO || (purchases.size() - Constants.ONE) < index);
     }
 
-    private List<Purchase> getPurchases(Scanner scanner){
+    private List<Purchase> setPurchases(Scanner scanner){
         List<Purchase> purchases = new ArrayList<>();
             while (scanner.hasNextLine()){
                 try {
@@ -82,32 +85,44 @@ public class PurchasesList {
         return totalCost;
     }
 
-    public void printPurchases(){
-        System.out.printf(Constants.TITLE_LINE_FORMAT, Constants.NAME, Constants.PRICE, Constants.NUMBER, Constants.DISCOUNT, Constants.COST);
+    public int binarySearch(Purchase purchase) throws NotSortedCollectionException {
+        if (!SearchComparator.isCollectionSorted){
+            throw new NotSortedCollectionException(Constants.COLLECTION_IS_NOT_SORTED);
+        }
+        return Collections.binarySearch(purchases, purchase, new SearchComparator());
+    }
+
+    public void sort(){
+        Collections.sort(purchases, PurchaseComparatorBuilder.getPurchaseComparator());
+        SearchComparator.collectionIsSorted();
+    }
+
+    public String toTable(){
+        StringBuilder table = new StringBuilder();
+        table.append(TableEnum.getTableTitle());
+        appendPurchasesToTable(table);
+        appendTotalPriceToTable(table);
+        return table.toString();
+    }
+
+    private void appendPurchasesToTable(StringBuilder table){
         for (Purchase purchase: purchases) {
-            System.out.println(purchase.getCheckLine());
-        }
-        System.out.printf(Constants.TOTAL_PRICE_FORMAT, Constants.TOTAL_COST, getTotalCost());
-    }
-
-    public void binarySearch(PurchasesList list, int index){
-        if (!SearchComparator.isIsCollectionSorted()){
-            System.err.println("Collection is not sorted");
-            return;
-        }
-        Purchase requiredPurchase = list.getListOfPurchases().get(index);
-        Collections.binarySearch(purchases, requiredPurchase, new SearchComparator());
-        int requiredIndex = Collections.binarySearch(purchases, requiredPurchase, new SearchComparator());
-        System.out.print(requiredPurchase);
-        if (requiredIndex >= Constants.ZERO){
-            System.out.printf(Constants.SEARCH_FORMAT, Constants.IS_FOUNDED_AT_POSITION, requiredIndex);
-        }else {
-            System.out.println(Constants.ISN_T_FOUND);
+            table.append(String.format(TableEnum.NAME.getFormat(), purchase.getName()));
+            table.append(String.format(TableEnum.PRICE.getFormat(), purchase.getPrice()));
+            table.append(String.format(TableEnum.NUMBER.getFormat(), purchase.getNumber()));
+            String discount;
+            if (purchase instanceof PriceDiscountPurchase){
+                discount = ((PriceDiscountPurchase) purchase).getDiscount().toString();
+            }else {
+                discount = Constants.MINUS;
+            }
+            table.append(String.format(TableEnum.DISCOUNT.getFormat(), discount));
+            table.append(String.format(TableEnum.COST.getFormat(), purchase.getCost()));
+            table.append(Constants.NEW_LINE);
         }
     }
 
-    public void sortPurchases(Comparator<Purchase> comparator){
-        Collections.sort(purchases, comparator);
-        SearchComparator.collectionIsNotSorted();
+    private void appendTotalPriceToTable(StringBuilder table){
+        table.append(String.format(Constants.TOTAL_PRICE_FORMAT, Constants.TOTAL_COST, getTotalCost()));
     }
 }

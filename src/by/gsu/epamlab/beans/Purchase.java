@@ -64,10 +64,6 @@ public class Purchase {
         return name + Constants.DELIMITER + price + Constants.DELIMITER + number;
     }
 
-    public String getCheckLine(){
-        return String.format(Constants.CHECK_LINE_FORMAT, name, price, number, Constants.MINUS, getCost());
-    }
-
     @Override
     public String toString() {
         return fieldsToString() + Constants.DELIMITER + getCost();

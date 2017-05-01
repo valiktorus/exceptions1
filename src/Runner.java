@@ -1,34 +1,59 @@
 import by.gsu.epamlab.beans.Purchase;
 import by.gsu.epamlab.PurchasesList;
-import java.util.Comparator;
+import by.gsu.epamlab.comparators.PurchaseComparatorBuilder;
+import by.gsu.epamlab.exceptions.NotSortedCollectionException;
 
 public class Runner {
     public static void main(String[] args) {
+        PurchaseComparatorBuilder.buildPurchaseComparator(args[2]);
         PurchasesList purchasesList = new PurchasesList(args[Constants.FILE_NAME_INDEX]);
-        purchasesList.printPurchases();
+
+        printTable(purchasesList);
 
         PurchasesList addonPurchasesList = new PurchasesList(args[Constants.ADDON_FILE_NAME_INDEX]);
 
-        purchasesList.insert(Constants.ZERO_INDEX, addonPurchasesList.getListOfPurchases().get(addonPurchasesList.getListOfPurchases().size() - Constants.ONE));
+        purchasesList.insert(Constants.ZERO_INDEX, addonPurchasesList.getPurchases().get(addonPurchasesList.getPurchases().size() - Constants.ONE));
+        purchasesList.insert(Constants.ONE_THOUSAND_INDEX, addonPurchasesList.getPurchases().get(Constants.ZERO_INDEX));
+        purchasesList.insert(Constants.SECOND_INDEX, addonPurchasesList.getPurchases().get(Constants.SECOND_INDEX));
 
-        purchasesList.insert(Constants.ONE_THOUSAND_INDEX, addonPurchasesList.getListOfPurchases().get(Constants.ZERO_INDEX));
+        deletePurchaseFromList(purchasesList, Constants.INDEX_THREE);
+        deletePurchaseFromList(purchasesList, Constants.INDEX_TEN);
+        deletePurchaseFromList(purchasesList, Constants.INDEX_MINUS_FIVE);
 
-        purchasesList.insert(Constants.SECOND_INDEX, addonPurchasesList.getListOfPurchases().get(Constants.SECOND_INDEX));
+        printTable(purchasesList);
 
-        purchasesList.delete(Constants.INDEX_THREE);
-        purchasesList.delete(Constants.INDEX_TEN);
-        purchasesList.delete(Constants.INDEX_MINUS_FIVE);
+        purchasesList.sort();
 
-        purchasesList.printPurchases();
-        try {
-           purchasesList.sortPurchases((Comparator<Purchase>) Class.forName(Constants.BY_GSU_EPAMLAB_COMPARATORS + args[2]).newInstance());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            System.err.println(Constants.WRONG_COMPARATOR);
-        }
+        printTable(purchasesList);
 
-        purchasesList.printPurchases();
         System.out.println(Constants.SEARCH_RESULTS);
-        purchasesList.binarySearch(addonPurchasesList, Constants.FIRST_SEARCH_INDEX);
-        purchasesList.binarySearch(addonPurchasesList, Constants.SECOND_SEARCH_INDEX);
+        try {
+            Purchase firstRequiredPurchase = addonPurchasesList.getPurchases().get(Constants.FIRST_SEARCH_INDEX);
+            int firstRequiredIndex = purchasesList.binarySearch(firstRequiredPurchase);
+            printSearchResult(firstRequiredIndex, firstRequiredPurchase);
+
+            Purchase secondRequiredPurchase = addonPurchasesList.getPurchases().get(Constants.SECOND_SEARCH_INDEX);
+            int secondRequiredIndex = purchasesList.binarySearch(secondRequiredPurchase);
+            printSearchResult(secondRequiredIndex, secondRequiredPurchase);
+        } catch (NotSortedCollectionException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private static void printSearchResult(int index, Purchase purchase){
+        System.out.print(purchase);
+        if (index >= Constants.ZERO){
+            System.out.printf(Constants.SEARCH_FORMAT, Constants.IS_FOUNDED_AT_POSITION, index);
+        }else {
+            System.out.println(Constants.ISN_T_FOUND);
+        }
+    }
+
+    private static void printTable(PurchasesList purchasesList){
+        System.out.println(purchasesList.toTable());
+    }
+
+    private static void deletePurchaseFromList(PurchasesList purchasesList, int index){
+        purchasesList.delete(index);
     }
 }

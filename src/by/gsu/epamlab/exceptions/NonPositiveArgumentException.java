@@ -1,5 +1,7 @@
 package by.gsu.epamlab.exceptions;
 
+import by.gsu.epamlab.Constants;
+
 public class NonPositiveArgumentException extends IllegalArgumentException {
     int nonPositiveValue;
     NumField numField;
@@ -15,6 +17,6 @@ public class NonPositiveArgumentException extends IllegalArgumentException {
 
     @Override
     public String toString() {
-        return "\t->non positive value " + nonPositiveValue + " in " + numField;
+        return Constants.NON_POSITIVE_VALUE + nonPositiveValue + Constants.IN + numField;
     }
 }
