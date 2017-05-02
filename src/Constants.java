@@ -1,6 +1,7 @@
 public class Constants {
     public static final int FILE_NAME_INDEX = 0;
     public static final int ADDON_FILE_NAME_INDEX = 1;
+    public static final int COMPARATOR_INDEX = 2;
     public static final int ONE = 1;
     public static final int ZERO_INDEX = 0;
     public static final int ONE_THOUSAND_INDEX = 1000;

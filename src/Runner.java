@@ -5,7 +5,7 @@ import by.gsu.epamlab.exceptions.NotSortedCollectionException;
 
 public class Runner {
     public static void main(String[] args) {
-        PurchaseComparatorBuilder.buildPurchaseComparator(args[2]);
+        PurchaseComparatorBuilder.buildPurchaseComparator(args[Constants.COMPARATOR_INDEX]);
         PurchasesList purchasesList = new PurchasesList(args[Constants.FILE_NAME_INDEX]);
 
         printTable(purchasesList);

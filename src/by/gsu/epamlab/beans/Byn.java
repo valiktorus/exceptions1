@@ -1,6 +1,5 @@
 package by.gsu.epamlab.beans;
 
-
 import java.math.RoundingMode;
 
 public class Byn implements Comparable<Byn>{

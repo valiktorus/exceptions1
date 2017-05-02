@@ -15,7 +15,7 @@ public class Constants {
     public static final int DISCOUNT_INDEX = 3;
     public static final String DELIMITER = ";";
     public static final String ERROR_EMPTY_NAME = TAB + "empty name";
-    public static final String NON_POSITIVE_VALUE = "\t->non positive value ";
+    public static final String NON_POSITIVE_VALUE = TAB + "non positive value ";
     public static final String IN = " in ";
 // PurchaseList
     public static final String ERROR_WRONG_NUMBER = TAB + "wrong number of arguments";
