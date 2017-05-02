@@ -12,20 +12,19 @@ public class PurchaseComparatorV1 implements Comparator<Purchase> {
     public int compare(Purchase first, Purchase second) {
         int compareResult = first.getName().compareTo(second.getName());
         if (compareResult == Constants.ZERO){
-            boolean isFirstInstanceOfPricePurchase = first instanceof PriceDiscountPurchase;
-            boolean isSecondInstanceOfPricePurchase = second instanceof PriceDiscountPurchase;
+            int firstPurchasePriority = getPurchasePriority(first);
+            int secondPurchasePriority = getPurchasePriority(second);
 
-            if (isSameClass(isFirstInstanceOfPricePurchase, isSecondInstanceOfPricePurchase)){
-                compareResult = first.getCost().getPriceInCoins() - second.getCost().getPriceInCoins();
+            if (firstPurchasePriority == secondPurchasePriority){
+                compareResult = first.getCost().compareTo(second.getCost());
             }else {
-                compareResult = isFirstInstanceOfPricePurchase ? Constants.ONE : Constants.MINUS_ONE;
+                compareResult = firstPurchasePriority;
             }
         }
         return compareResult;
     }
 
-    private boolean isSameClass(boolean isFirstInstanceOfPricePurchase, boolean isSecondInstanceOfPricePurchase){
-        return (isFirstInstanceOfPricePurchase && isSecondInstanceOfPricePurchase) ||
-                (!(isFirstInstanceOfPricePurchase) && !(isSecondInstanceOfPricePurchase));
+    private static int getPurchasePriority(Purchase purchase){
+        return purchase instanceof PriceDiscountPurchase ? Constants.ONE : Constants.MINUS_ONE;
     }
 }
