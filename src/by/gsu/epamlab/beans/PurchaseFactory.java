@@ -10,24 +10,18 @@ public class PurchaseFactory {
         String[] values = csvLine.split(Constants.DELIMITER);
         int valuesLength = values.length;
         Purchase purchase;
-        String name;
-        int price;
-        int number;
-        int discount;
         try {
             switch (valuesLength){
                 case 3:
-                    name = values[Constants.NAME_INDEX];
-                    price = Integer.parseInt(values[Constants.PRICE_INDEX]);
-                    number = Integer.parseInt(values[Constants.UNITS_NUMBER_INDEX]);
-                    purchase = new Purchase(name, price, number);
+                    purchase = new Purchase(values[Constants.NAME_INDEX],
+                            Integer.parseInt(values[Constants.PRICE_INDEX]),
+                            Integer.parseInt(values[Constants.UNITS_NUMBER_INDEX]));
                     break;
                 case 4:
-                    name = values[Constants.NAME_INDEX];
-                    price = Integer.parseInt(values[Constants.PRICE_INDEX]);
-                    number = Integer.parseInt(values[Constants.UNITS_NUMBER_INDEX]);
-                    discount = Integer.parseInt(values[Constants.DISCOUNT_INDEX]);
-                    purchase = new PriceDiscountPurchase(name, price, number, discount);
+                    purchase = new PriceDiscountPurchase(values[Constants.NAME_INDEX],
+                            Integer.parseInt(values[Constants.PRICE_INDEX]),
+                            Integer.parseInt(values[Constants.UNITS_NUMBER_INDEX]),
+                            Integer.parseInt(values[Constants.DISCOUNT_INDEX]));
                     break;
                 default:
                     throw new CsvLineException(csvLine, Constants.ERROR_WRONG_NUMBER);
